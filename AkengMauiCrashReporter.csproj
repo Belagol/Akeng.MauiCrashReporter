@@ -1,0 +1,107 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>
+			<!--net8.0;
+			net8.0-android36.0;-->
+			<!--net9.0;-->
+			net9.0-android35.0;
+			<!--net10.0;-->
+			net10.0-android;
+			net9.0-ios;
+			net9.0-maccatalyst;
+			net10.0-ios;
+			net10.0-maccatalyst
+		</TargetFrameworks>
+		<!--<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>-->
+		<!--<TargetFrameworks>net8.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>-->
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);<!--net8.0-windows10.0.19041.0;-->net9.0-windows10.0.19041.0;net10.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+		<!--<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">
+			$(TargetFrameworks);
+			net8.0-ios;
+			net8.0-maccatalyst;
+			net9.0-ios;
+			net9.0-maccatalyst;
+			net10.0-ios;
+			net10.0-maccatalyst
+		</TargetFrameworks>-->
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+
+		<PackageId>Akeng.MauiCrashReporter</PackageId>
+		<Version>1.0.8</Version>
+		<PackageVersion>1.0.8</PackageVersion>
+		<AssemblyVersion>1.0.8</AssemblyVersion>
+		<Authors>Dr. Ange Gabriel Belinga</Authors>
+		<Company>Akeng SARL AU</Company>
+		<Title>Akeng MAUI Crash Reporter</Title>
+		<Description>Lightweight crash reporting and diagnostics for .NET MAUI applications, with persistent local crash storage, breadcrumbs, lifecycle tracking, environment information and Release-build diagnostics.
+		</Description>
+		<PackageTags>
+			maui;
+			dotnet-maui;
+			crash;
+			crash-reporting;
+			diagnostics;
+			exception;
+			xaml;
+			android;
+			ios;
+			maccatalyst;
+			logging;
+			mobile
+		</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<!--<RepositoryUrl>https://github.com/Belagol/Akeng.CountryPicker</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://akengsarl.com/en</PackageProjectUrl>-->
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="icon.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<!-- .NET 8 / MAUI 8 -->
+	<ItemGroup Condition="&#xD;&#xA;		'$(TargetFramework)' == 'net8.0'&#xD;&#xA;		Or&#xD;&#xA;		'$(TargetFramework)' == 'net8.0-windows10.0.19041.0'">
+
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
+
+	</ItemGroup>
+
+
+	<!-- .NET 9 / MAUI 9 -->
+	<ItemGroup Condition="&#xD;&#xA;		'$(TargetFramework)' == 'net9.0'&#xD;&#xA;		Or&#xD;&#xA;		'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">
+
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
+
+	</ItemGroup>
+
+
+	<!-- .NET 10 / MAUI 10 -->
+	<ItemGroup Condition="&#xD;&#xA;		'$(TargetFramework)' == 'net10.0'&#xD;&#xA;		Or&#xD;&#xA;		'$(TargetFramework)' == 'net10.0-windows10.0.19041.0'">
+
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="10.0.100" />
+	</ItemGroup>
+
+</Project>
