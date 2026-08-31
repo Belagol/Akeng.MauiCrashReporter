@@ -8,17 +8,17 @@ namespace AkengMauiCrashReporter.Lifecycle
     {
         public static void Register(MauiAppBuilder builder, MauiCrashReporterOptions options)
         {
-            WriteDiagnostic("REGISTER ENTERED");
+            //WriteDiagnostic("REGISTER ENTERED");
             builder.ConfigureLifecycleEvents(events =>
             {
-                WriteDiagnostic("CONFIGURE LIFECYCLE EVENTS");
+                //WriteDiagnostic("CONFIGURE LIFECYCLE EVENTS");
 #if ANDROID
                events.AddAndroid(android =>
                {
-               WriteDiagnostic("ADD ANDROID EXECUTED");
+               //WriteDiagnostic("ADD ANDROID EXECUTED");
                     android.OnCreate((activity, bundle) =>
                     {
-                     WriteDiagnostic("ANDROID ONCREATE");
+                     //WriteDiagnostic("ANDROID ONCREATE");
                         if (options.CaptureLifecycleEvents)
                         {
                             Track(MauiLifecycleEventType.ApplicationStarted, activity);
@@ -27,7 +27,7 @@ namespace AkengMauiCrashReporter.Lifecycle
 
                     android.OnResume(activity =>
                     {
-                     WriteDiagnostic("ANDROID ONRESUME");
+                     //WriteDiagnostic("ANDROID ONRESUME");
                         if (options.CaptureLifecycleEvents)
                         {
                             Track(MauiLifecycleEventType.ApplicationResumed, activity);
@@ -80,64 +80,64 @@ namespace AkengMauiCrashReporter.Lifecycle
 
         private static async Task TryPresentPreviousCrashAsync()
         {
-            WriteDiagnostic(
-            "TryPresentPreviousCrashAsync ENTERED");
-            try
-            {
-                await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), $"Lifecycle called at {DateTime.UtcNow:O}");
-
-                var services = IPlatformApplication.Current?.Services;
-
-                if (services is null)
-                {
-                    WriteDiagnostic("SERVICES NULL");
-                    await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), "SERVICES NULL");
-                    return;
-                }
-                WriteDiagnostic("SERVICES FOUND");
-                var presenter = services.GetService<CrashReportPresenter>();
-
-                if (presenter is null)
-                {
-                    WriteDiagnostic("PRESENTER NULL");
-                    await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), "PRESENTER NULL");
-                    return;
-                }
-                WriteDiagnostic("PRESENTER FOUND");
-                await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), "PRESENTER FOUND");
-                await presenter.TryPresentAsync();
-                WriteDiagnostic("PRESENTER FINISHED");
-            }
-            catch (Exception ex)
-            {
-                WriteDiagnostic(
-                $"PRESENTER ERROR: {ex}");
-                try
-                {
-                    await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), ex.ToString());
-                }
-                catch
-                {
-                }
-            }
+            //WriteDiagnostic(
+            //"TryPresentPreviousCrashAsync ENTERED");
             //try
             //{
+            //    await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), $"Lifecycle called at {DateTime.UtcNow:O}");
+
             //    var services = IPlatformApplication.Current?.Services;
 
             //    if (services is null)
+            //    {
+            //        WriteDiagnostic("SERVICES NULL");
+            //        await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), "SERVICES NULL");
             //        return;
-
+            //    }
+            //    WriteDiagnostic("SERVICES FOUND");
             //    var presenter = services.GetService<CrashReportPresenter>();
 
             //    if (presenter is null)
+            //    {
+            //        WriteDiagnostic("PRESENTER NULL");
+            //        await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), "PRESENTER NULL");
             //        return;
-
+            //    }
+            //    WriteDiagnostic("PRESENTER FOUND");
+            //    await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), "PRESENTER FOUND");
             //    await presenter.TryPresentAsync();
+            //    WriteDiagnostic("PRESENTER FINISHED");
             //}
-            //catch
+            //catch (Exception ex)
             //{
-            //    // Never crash the host application.
+            //    WriteDiagnostic(
+            //    $"PRESENTER ERROR: {ex}");
+            //    try
+            //    {
+            //        await File.WriteAllTextAsync(Path.Combine(FileSystem.AppDataDirectory, "lifecycle-presenter.txt"), ex.ToString());
+            //    }
+            //    catch
+            //    {
+            //    }
             //}
+            try
+            {
+                var services = IPlatformApplication.Current?.Services;
+
+                if (services is null)
+                    return;
+
+                var presenter = services.GetService<CrashReportPresenter>();
+
+                if (presenter is null)
+                    return;
+
+                await presenter.TryPresentAsync();
+            }
+            catch
+            {
+                // Never crash the host application.
+            }
         }
 
         private static void Track(MauiLifecycleEventType eventType, object? source = null)
@@ -153,21 +153,21 @@ namespace AkengMauiCrashReporter.Lifecycle
             }
         }
 
-        private static void WriteDiagnostic(string message)
-        {
-            try
-            {
-                var path = Path.Combine(
-                    FileSystem.AppDataDirectory,
-                    "akeng-lifecycle-debug.txt");
+        //private static void WriteDiagnostic(string message)
+        //{
+        //    try
+        //    {
+        //        var path = Path.Combine(
+        //            FileSystem.AppDataDirectory,
+        //            "akeng-lifecycle-debug.txt");
 
-                File.AppendAllText(
-                    path,
-                    $"{DateTime.UtcNow:O} | {message}{Environment.NewLine}");
-            }
-            catch
-            {
-            }
-        }
+        //        File.AppendAllText(
+        //            path,
+        //            $"{DateTime.UtcNow:O} | {message}{Environment.NewLine}");
+        //    }
+        //    catch
+        //    {
+        //    }
+        //}
     }
 }

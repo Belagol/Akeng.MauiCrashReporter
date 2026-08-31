@@ -95,13 +95,13 @@ namespace AkengMauiCrashReporter.Extensions
 
             if (options.CaptureLifecycleEvents || options.ShowCrashReportPopupOnNextStartup)
             {
-                WriteDiagnostic("CALLING MauiLifecycleRegistration.Register");
+                //WriteDiagnostic("CALLING MauiLifecycleRegistration.Register");
                 MauiLifecycleRegistration.Register(builder, options);
             }
-            else
-            {
-                WriteDiagnostic("LIFECYCLE REGISTRATION SKIPPED");
-            }
+            //else
+            //{
+            //    WriteDiagnostic("LIFECYCLE REGISTRATION SKIPPED");
+            //}
 
 
             //builder.Services.AddSingleton(options);
@@ -157,21 +157,21 @@ namespace AkengMauiCrashReporter.Extensions
             return builder;
         }
 
-        private static void WriteDiagnostic(string message)
-        {
-            try
-            {
-                var path = Path.Combine(
-                    FileSystem.AppDataDirectory,
-                    "akeng-lifecycle-debug.txt");
+        //private static void WriteDiagnostic(string message)
+        //{
+        //    try
+        //    {
+        //        var path = Path.Combine(
+        //            FileSystem.AppDataDirectory,
+        //            "akeng-lifecycle-debug.txt");
 
-                File.AppendAllText(
-                    path,
-                    $"{DateTime.UtcNow:O} | {message}{Environment.NewLine}");
-            }
-            catch
-            {
-            }
-        }
+        //        File.AppendAllText(
+        //            path,
+        //            $"{DateTime.UtcNow:O} | {message}{Environment.NewLine}");
+        //    }
+        //    catch
+        //    {
+        //    }
+        //}
     }
 }
