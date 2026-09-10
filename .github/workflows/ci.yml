@@ -34,12 +34,28 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Select .NET 9 SDK
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "9.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          '@ | Set-Content global.json
+
+          dotnet --version
+
       - name: Install Android workload
         run: dotnet workload install android
 
       - name: Show environment
         run: |
           dotnet --version
+          dotnet --list-sdks
           dotnet workload list
 
       - name: Restore Android
@@ -67,12 +83,28 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Select .NET 10 SDK
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "10.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          '@ | Set-Content global.json
+
+          dotnet --version
+
       - name: Install Android workload
         run: dotnet workload install android
 
       - name: Show environment
         run: |
           dotnet --version
+          dotnet --list-sdks
           dotnet workload list
 
       - name: Restore Android
@@ -100,12 +132,28 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Select .NET 9 SDK
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "9.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          '@ | Set-Content global.json
+
+          dotnet --version
+
       - name: Install Windows workload
         run: dotnet workload install maui-windows
 
       - name: Show environment
         run: |
           dotnet --version
+          dotnet --list-sdks
           dotnet workload list
 
       - name: Restore Windows
@@ -133,12 +181,28 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Select .NET 10 SDK
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "10.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          '@ | Set-Content global.json
+
+          dotnet --version
+
       - name: Install Windows workload
         run: dotnet workload install maui-windows
 
       - name: Show environment
         run: |
           dotnet --version
+          dotnet --list-sdks
           dotnet workload list
 
       - name: Restore Windows
@@ -166,13 +230,29 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Select .NET 9 SDK
+        run: |
+          cat > global.json <<'EOF'
+          {
+            "sdk": {
+              "version": "9.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          EOF
+
+          dotnet --version
+
       - name: Install Apple workloads
         run: dotnet workload install ios maccatalyst
 
       - name: Show environment
         run: |
           dotnet --version
+          dotnet --list-sdks
           dotnet workload list
+          xcodebuild -version
 
       - name: Restore iOS
         run: dotnet restore -p:TargetFramework=net9.0-ios18.0
@@ -210,13 +290,29 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Select .NET 10 SDK
+        run: |
+          cat > global.json <<'EOF'
+          {
+            "sdk": {
+              "version": "10.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          EOF
+
+          dotnet --version
+
       - name: Install Apple workloads
         run: dotnet workload install ios maccatalyst
 
       - name: Show environment
         run: |
           dotnet --version
+          dotnet --list-sdks
           dotnet workload list
+          xcodebuild -version
 
       - name: Restore iOS
         run: dotnet restore -p:TargetFramework=net10.0-ios26.0
@@ -254,6 +350,26 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Select .NET 9 SDK
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "9.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          '@ | Set-Content global.json
+
+          dotnet --version
+
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet --list-sdks
+
       - name: Restore tests
         run: dotnet restore
 
@@ -277,6 +393,26 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
+
+      - name: Select .NET 10 SDK
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "10.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          '@ | Set-Content global.json
+
+          dotnet --version
+
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet --list-sdks
 
       - name: Restore tests
         run: dotnet restore
@@ -312,6 +448,21 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Select .NET 10 SDK
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "10.0.100",
+              "rollForward": "latestFeature",
+              "allowPrerelease": false
+            }
+          }
+          '@ | Set-Content global.json
+
+          dotnet --version
+
       - name: Install Android workload
         run: dotnet workload install android
 
@@ -321,6 +472,7 @@ jobs:
       - name: Show environment
         run: |
           dotnet --version
+          dotnet --list-sdks
           dotnet workload list
 
       - name: Pack NuGet package
