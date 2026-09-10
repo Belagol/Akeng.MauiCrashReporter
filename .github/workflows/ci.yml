@@ -17,6 +17,7 @@ permissions:
 env:
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 jobs:
 
@@ -40,8 +41,8 @@ jobs:
           dotnet-version: '10.0.x'
           workloads: android
 
-      - name: Restore
-        run: dotnet restore
+      - name: Restore .NET 9 Android
+        run: dotnet restore -p:TargetFramework=net9.0-android35.0
 
       - name: Build .NET 9 Android
         run: >
@@ -50,6 +51,9 @@ jobs:
           -f net9.0-android35.0
           --no-restore
           -p:ContinuousIntegrationBuild=true
+
+      - name: Restore .NET 10 Android
+        run: dotnet restore -p:TargetFramework=net10.0-android36.0
 
       - name: Build .NET 10 Android
         run: >
@@ -78,11 +82,11 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
-      - name: Install MAUI workloads
+      - name: Install Windows workload
         run: dotnet workload install maui-windows
 
-      - name: Restore
-        run: dotnet restore
+      - name: Restore .NET 9 Windows
+        run: dotnet restore -p:TargetFramework=net9.0-windows10.0.19041.0
 
       - name: Build .NET 9 Windows
         run: >
@@ -91,6 +95,9 @@ jobs:
           -f net9.0-windows10.0.19041.0
           --no-restore
           -p:ContinuousIntegrationBuild=true
+
+      - name: Restore .NET 10 Windows
+        run: dotnet restore -p:TargetFramework=net10.0-windows10.0.19041.0
 
       - name: Build .NET 10 Windows
         run: >
@@ -121,8 +128,8 @@ jobs:
           dotnet-version: '10.0.x'
           workloads: ios, maccatalyst
 
-      - name: Restore
-        run: dotnet restore
+      - name: Restore .NET 9 iOS
+        run: dotnet restore -p:TargetFramework=net9.0-ios18.0
 
       - name: Build .NET 9 iOS
         run: >
@@ -132,6 +139,9 @@ jobs:
           --no-restore
           -p:ContinuousIntegrationBuild=true
 
+      - name: Restore .NET 9 Mac Catalyst
+        run: dotnet restore -p:TargetFramework=net9.0-maccatalyst18.0
+
       - name: Build .NET 9 Mac Catalyst
         run: >
           dotnet build
@@ -140,6 +150,9 @@ jobs:
           --no-restore
           -p:ContinuousIntegrationBuild=true
 
+      - name: Restore .NET 10 iOS
+        run: dotnet restore -p:TargetFramework=net10.0-ios26.0
+
       - name: Build .NET 10 iOS
         run: >
           dotnet build
@@ -147,6 +160,9 @@ jobs:
           -f net10.0-ios26.0
           --no-restore
           -p:ContinuousIntegrationBuild=true
+
+      - name: Restore .NET 10 Mac Catalyst
+        run: dotnet restore -p:TargetFramework=net10.0-maccatalyst26.0
 
       - name: Build .NET 10 Mac Catalyst
         run: >
@@ -172,10 +188,10 @@ jobs:
             9.0.x
             10.0.x
 
-      - name: Restore
+      - name: Restore tests
         run: dotnet restore
 
-      - name: Test
+      - name: Run tests
         run: >
           dotnet test
           -c Release
@@ -184,12 +200,13 @@ jobs:
 
 
   pack:
-    name: Create NuGet packages
+    name: Create NuGet Packages
     runs-on: windows-latest
 
     needs:
       - build-android
       - build-windows
+      - build-apple
       - test
 
     steps:
@@ -211,14 +228,22 @@ jobs:
       - name: Install Windows workload
         run: dotnet workload install maui-windows
 
-      - name: Restore
-        run: dotnet restore
+      - name: Restore Android .NET 9
+        run: dotnet restore -p:TargetFramework=net9.0-android35.0
+
+      - name: Restore Android .NET 10
+        run: dotnet restore -p:TargetFramework=net10.0-android36.0
+
+      - name: Restore Windows .NET 9
+        run: dotnet restore -p:TargetFramework=net9.0-windows10.0.19041.0
+
+      - name: Restore Windows .NET 10
+        run: dotnet restore -p:TargetFramework=net10.0-windows10.0.19041.0
 
       - name: Pack
         run: >
           dotnet pack
           -c Release
-          --no-restore
           -p:ContinuousIntegrationBuild=true
 
       - name: Upload NuGet artifacts
