@@ -983,9 +983,9 @@ Potential future improvements include:
 
 Contributions, bug reports, feature requests, and suggestions are welcome.
 
-- Repository: https://github.com/Belagol/Akeng.CountryPicker
-- Issues: https://github.com/Belagol/Akeng.CountryPicker/issues
-- Pull Requests: https://github.com/Belagol/Akeng.CountryPicker/pulls
+- Repository: https://github.com/Belagol/Akeng.MauiCrashReporter
+- Issues: https://github.com/Belagol/Akeng.MauiCrashReporter/issues
+- Pull Requests: https://github.com/Belagol/Akeng.MauiCrashReporter/pulls
 
 When reporting an issue, please provide as much relevant information as possible, including:
 

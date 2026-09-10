@@ -1,32 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>
-			<!--net8.0;
-			net8.0-android36.0;-->
-			<!--net9.0;-->
-			net9.0-android35.0;
-			<!--net10.0;-->
-			net10.0-android;
-			net9.0-ios;
-			net9.0-maccatalyst;
-			net10.0-ios;
-			net10.0-maccatalyst
-		</TargetFrameworks>
-		<!--<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>-->
-		<!--<TargetFrameworks>net8.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>-->
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);<!--net8.0-windows10.0.19041.0;-->net9.0-windows10.0.19041.0;net10.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0-android35.0;net10.0-android;net9.0-ios;net9.0-maccatalyst;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0;net10.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
-		<!--<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('osx'))">
-			$(TargetFrameworks);
-			net8.0-ios;
-			net8.0-maccatalyst;
-			net9.0-ios;
-			net9.0-maccatalyst;
-			net10.0-ios;
-			net10.0-maccatalyst
-		</TargetFrameworks>-->
+		
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -40,40 +19,45 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 
 		<PackageId>Akeng.MauiCrashReporter</PackageId>
-		<Version>1.0.9</Version>
 		<PackageVersion>1.0.9</PackageVersion>
+
+		<Version>1.0.9</Version>
 		<AssemblyVersion>1.0.9</AssemblyVersion>
+
 		<Authors>Dr. Ange Gabriel Belinga</Authors>
 		<Company>Akeng SARL AU</Company>
+
 		<Title>Akeng MAUI Crash Reporter</Title>
-		<Description>Lightweight crash reporting and diagnostics for .NET MAUI applications, with persistent local crash storage, breadcrumbs, lifecycle tracking, environment information and Release-build diagnostics.
-		</Description>
-		<PackageTags>
-			maui;
-			dotnet-maui;
-			crash;
-			crash-reporting;
-			diagnostics;
-			exception;
-			xaml;
-			android;
-			ios;
-			maccatalyst;
-			logging;
-			mobile
-		</PackageTags>
+		<Description>A performant crash diagnostics library designed specifically for .NET MAUI applications.</Description>
+
+		<PackageTags>maui;dotnet-maui;crash;crash-reporting;diagnostics;exception;xaml;android;ios;maccatalyst;logging;mobile</PackageTags>
+		
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+		<ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+		<Deterministic>true</Deterministic>
+		<DebugType>portable</DebugType>
+
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/Belagol/Akeng.MauiCrashReporter</RepositoryUrl>
 
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<!--<RepositoryUrl>https://github.com/Belagol/Akeng.CountryPicker</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageProjectUrl>https://akengsarl.com/en</PackageProjectUrl>-->
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageProjectUrl>https://akengsarl.com/en</PackageProjectUrl>
+
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageIcon>icon.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
+		<None Include="LICENSE" Pack="true" PackagePath="\" />
 		<None Include="icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
