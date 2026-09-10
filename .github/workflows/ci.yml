@@ -17,11 +17,12 @@ permissions:
 env:
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 jobs:
 
-  build-android:
-    name: Build Android
+  build-android-net9:
+    name: Build Android (.NET 9)
     runs-on: windows-latest
 
     steps:
@@ -29,21 +30,22 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup .NET 9
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '9.0.x'
-          workloads: android
 
-      - name: Setup .NET 10
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-          workloads: android
+      - name: Install Android workload
+        run: dotnet workload install android
 
-      - name: Restore
-        run: dotnet restore
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet workload list
 
-      - name: Build .NET 9 Android
+      - name: Restore Android
+        run: dotnet restore -p:TargetFramework=net9.0-android35.0
+
+      - name: Build Android
         run: >
           dotnet build
           -c Release
@@ -51,7 +53,32 @@ jobs:
           --no-restore
           -p:ContinuousIntegrationBuild=true
 
-      - name: Build .NET 10 Android
+
+  build-android-net10:
+    name: Build Android (.NET 10)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install Android workload
+        run: dotnet workload install android
+
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet workload list
+
+      - name: Restore Android
+        run: dotnet restore -p:TargetFramework=net10.0-android36.0
+
+      - name: Build Android
         run: >
           dotnet build
           -c Release
@@ -60,8 +87,8 @@ jobs:
           -p:ContinuousIntegrationBuild=true
 
 
-  build-windows:
-    name: Build Windows
+  build-windows-net9:
+    name: Build Windows (.NET 9)
     runs-on: windows-latest
 
     steps:
@@ -69,22 +96,22 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup .NET 9
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '9.0.x'
 
-      - name: Setup .NET 10
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Install MAUI workloads
+      - name: Install Windows workload
         run: dotnet workload install maui-windows
 
-      - name: Restore
-        run: dotnet restore
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet workload list
 
-      - name: Build .NET 9 Windows
+      - name: Restore Windows
+        run: dotnet restore -p:TargetFramework=net9.0-windows10.0.19041.0
+
+      - name: Build Windows
         run: >
           dotnet build
           -c Release
@@ -92,7 +119,32 @@ jobs:
           --no-restore
           -p:ContinuousIntegrationBuild=true
 
-      - name: Build .NET 10 Windows
+
+  build-windows-net10:
+    name: Build Windows (.NET 10)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install Windows workload
+        run: dotnet workload install maui-windows
+
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet workload list
+
+      - name: Restore Windows
+        run: dotnet restore -p:TargetFramework=net10.0-windows10.0.19041.0
+
+      - name: Build Windows
         run: >
           dotnet build
           -c Release
@@ -101,8 +153,8 @@ jobs:
           -p:ContinuousIntegrationBuild=true
 
 
-  build-apple:
-    name: Build Apple Platforms
+  build-apple-net9:
+    name: Build Apple Platforms (.NET 9)
     runs-on: macos-latest
 
     steps:
@@ -110,21 +162,22 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup .NET 9
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '9.0.x'
-          workloads: ios, maccatalyst
 
-      - name: Setup .NET 10
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '10.0.x'
-          workloads: ios, maccatalyst
+      - name: Install Apple workloads
+        run: dotnet workload install ios maccatalyst
 
-      - name: Restore
-        run: dotnet restore
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet workload list
 
-      - name: Build .NET 9 iOS
+      - name: Restore iOS
+        run: dotnet restore -p:TargetFramework=net9.0-ios18.0
+
+      - name: Build iOS
         run: >
           dotnet build
           -c Release
@@ -132,7 +185,10 @@ jobs:
           --no-restore
           -p:ContinuousIntegrationBuild=true
 
-      - name: Build .NET 9 Mac Catalyst
+      - name: Restore Mac Catalyst
+        run: dotnet restore -p:TargetFramework=net9.0-maccatalyst18.0
+
+      - name: Build Mac Catalyst
         run: >
           dotnet build
           -c Release
@@ -140,7 +196,32 @@ jobs:
           --no-restore
           -p:ContinuousIntegrationBuild=true
 
-      - name: Build .NET 10 iOS
+
+  build-apple-net10:
+    name: Build Apple Platforms (.NET 10)
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install Apple workloads
+        run: dotnet workload install ios maccatalyst
+
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet workload list
+
+      - name: Restore iOS
+        run: dotnet restore -p:TargetFramework=net10.0-ios26.0
+
+      - name: Build iOS
         run: >
           dotnet build
           -c Release
@@ -148,7 +229,10 @@ jobs:
           --no-restore
           -p:ContinuousIntegrationBuild=true
 
-      - name: Build .NET 10 Mac Catalyst
+      - name: Restore Mac Catalyst
+        run: dotnet restore -p:TargetFramework=net10.0-maccatalyst26.0
+
+      - name: Build Mac Catalyst
         run: >
           dotnet build
           -c Release
@@ -157,25 +241,47 @@ jobs:
           -p:ContinuousIntegrationBuild=true
 
 
-  test:
-    name: Run Tests
+  test-net9:
+    name: Run Tests (.NET 9)
     runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: |
-            9.0.x
-            10.0.x
+          dotnet-version: '9.0.x'
 
-      - name: Restore
+      - name: Restore tests
         run: dotnet restore
 
-      - name: Test
+      - name: Run tests
+        run: >
+          dotnet test
+          -c Release
+          --no-restore
+          -p:ContinuousIntegrationBuild=true
+
+
+  test-net10:
+    name: Run Tests (.NET 10)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore tests
+        run: dotnet restore
+
+      - name: Run tests
         run: >
           dotnet test
           -c Release
@@ -184,41 +290,43 @@ jobs:
 
 
   pack:
-    name: Create NuGet packages
+    name: Create NuGet Packages
     runs-on: windows-latest
 
     needs:
-      - build-android
-      - build-windows
-      - test
+      - build-android-net9
+      - build-android-net10
+      - build-windows-net9
+      - build-windows-net10
+      - build-apple-net9
+      - build-apple-net10
+      - test-net9
+      - test-net10
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup .NET 9
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: '9.0.x'
-          workloads: android
-
       - name: Setup .NET 10
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
-          workloads: android
+
+      - name: Install Android workload
+        run: dotnet workload install android
 
       - name: Install Windows workload
         run: dotnet workload install maui-windows
 
-      - name: Restore
-        run: dotnet restore
+      - name: Show environment
+        run: |
+          dotnet --version
+          dotnet workload list
 
-      - name: Pack
+      - name: Pack NuGet package
         run: >
           dotnet pack
           -c Release
-          --no-restore
           -p:ContinuousIntegrationBuild=true
 
       - name: Upload NuGet artifacts
